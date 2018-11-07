@@ -1,0 +1,35 @@
+# Secure localhost:5000 with self-signed SSL cert and
+# serve it on test.localhost:4000 port
+debug = true
+logLevel = "DEBUG"
+defaultEntryPoints = ["httpSSL"]
+
+[web]
+address = ":8080"
+
+[entryPoints]
+  [entryPoints.httpSSL]
+  address = ":4000"
+    [entryPoints.httpSSL.tls]
+    # [entryPoints.httpSSL.tls.defaultCertificate]
+    #   certFile = "/certs/cert.crt"
+    #   keyFile = "/certs/cert.key"
+
+[file]
+
+[backends]
+  [backends.backend1]
+    [backends.backend1.servers]
+      [backends.backend1.servers.server0]
+        url = "http://192.168.0.16:5000"
+
+[frontends]
+  [frontends.frontend1]
+  entryPoints = ["httpSSL"]
+  backend = "backend1"
+
+[[tls]]
+  entryPoints = ["httpSSL"]
+  [tls.certificate]
+    certFile = "/certs/cert.crt"
+    keyFile = "/certs/cert.key"

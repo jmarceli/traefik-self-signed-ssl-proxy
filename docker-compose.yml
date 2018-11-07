@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:1.7.0
+    networks:
+      - public
+    ports:
+      - 4000:4000
+      - 8080:8080
+    volumes:
+      - ./traefik.toml:/traefik.toml
+      - ./certs/:/certs/
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  public:
+    driver: bridge
